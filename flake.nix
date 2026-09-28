@@ -20,9 +20,19 @@
           npmDepsHash = "sha256-L/h9zJeJnXOaiyLZxpoTFJwcY0xqCWktl4q7z5FP044";
           dontNpmBuild = true;
 
+          postInstall = ''
+            mkdir -p $out/bin
+            makeWrapper ${pkgs.nodejs}/bin/node $out/bin/adsbridge \
+              --add-flags "$out/lib/node_modules/readsb/bridge.js" \
+              --prefix NODE_PATH : "$out/lib/node_modules/readsb/node_modules"
+          '';
+
+          nativeBuildInputs = [ pkgs.makeWrapper ];
+
           meta = {
             description = "WebSocket bridge for readsb SBS stream";
             license = pkgs.lib.licenses.isc;
+            mainProgram = "adsbridge";
           };
         };
       in
@@ -30,10 +40,6 @@
         packages = {
           default = adsbridge;
           adsbridge = adsbridge;
-        };
-
-        devShells.default = pkgs.mkShell {
-          packages = with pkgs; [ nodejs ];
         };
       }
     );
