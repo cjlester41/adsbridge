@@ -17,7 +17,8 @@
 
           src = ./.;
 
-          npmDepsHash = pkgs.lib.fakeSha256; # replace after first build
+          npmDepsHash = "sha256-L/h9zJeJnXOaiyLZxpoTFJwcY0xqCWktl4q7z5FP044";
+          dontNpmBuild = true;
 
           meta = {
             description = "WebSocket bridge for readsb SBS stream";
